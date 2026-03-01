@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Zoo - Finding Belly</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Title Screen -->
+        <div id="title-screen" class="screen active">
+            <div class="stars-bg"></div>
+            <h1 class="game-title">COSMIC ZOO</h1>
+            <h2 class="subtitle">Finding Belly</h2>
+            <div class="belly-preview"></div>
+            <p class="tagline">An adventure to rescue your best friend!</p>
+            <button id="start-btn" class="main-btn">START GAME</button>
+        </div>
+
+        <!-- Character Select Screen -->
+        <div id="character-select" class="screen">
+            <div class="stars-bg"></div>
+            <h2>Choose Your Character</h2>
+            <div class="character-options">
+                <div class="character-option" data-gender="male">
+                    <div class="character-preview male-char"></div>
+                    <p>Boy</p>
+                </div>
+                <div class="character-option" data-gender="female">
+                    <div class="character-preview female-char"></div>
+                    <p>Girl</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Select Screen -->
+        <div id="level-select" class="screen">
+            <div class="clouds-bg"></div>
+            <button id="back-to-home" class="home-btn">🏠 Home</button>
+            <h2 class="level-select-title">SELECT LEVEL</h2>
+            <div class="levels-container">
+                <div class="level-row">
+                    <div class="level-node" data-level="1">
+                        <div class="level-cloud">
+                            <span class="level-number">1</span>
+                        </div>
+                        <p class="level-name">Sky Gardens</p>
+                    </div>
+                    <div class="level-node locked" data-level="2">
+                        <div class="level-cloud">
+                            <span class="level-number">🔒</span>
+                        </div>
+                        <p class="level-name">???</p>
+                    </div>
+                    <div class="level-node locked" data-level="3">
+                        <div class="level-cloud">
+                            <span class="level-number">🔒</span>
+                        </div>
+                        <p class="level-name">???</p>
+                    </div>
+                </div>
+                <p class="chapter-label">☁️ Chapter 1: The Clouds</p>
+            </div>
+            <button id="pets-btn" class="pets-btn">🐾 Pets</button>
+        </div>
+
+        <!-- Pets Collection Modal -->
+        <div id="pets-modal" class="modal hidden">
+            <div class="modal-content pets-modal-content">
+                <h3>🐾 My Pets</h3>
+                <div id="pets-collection" class="pets-collection">
+                    <!-- Pets will be added here by JavaScript -->
+                </div>
+                <p class="pets-count">Pets Unlocked: <span id="pets-count-num">0</span></p>
+                <button id="close-pets-btn" class="secondary-btn">Close</button>
+            </div>
+        </div>
+
+        <!-- Level Mode Select Modal -->
+        <div id="mode-select-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Level 1: Sky Gardens</h3>
+                <p>How would you like to play?</p>
+                <div class="mode-buttons">
+                    <button id="story-mode-btn" class="mode-btn story-btn">
+                        <span class="mode-icon">📖</span>
+                        <span class="mode-title">Story Mode</span>
+                        <span class="mode-desc">Full experience with cutscenes</span>
+                    </button>
+                    <button id="freeplay-mode-btn" class="mode-btn freeplay-btn">
+                        <span class="mode-icon">🎮</span>
+                        <span class="mode-title">Free Play</span>
+                        <span class="mode-desc">Just parkour and boss battle</span>
+                    </button>
+                </div>
+                <button id="close-modal-btn" class="secondary-btn">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Cutscene Screen -->
+        <div id="cutscene-screen" class="screen">
+            <div class="cutscene-bg"></div>
+            <div class="cutscene-characters"></div>
+            <div class="dialogue-box">
+                <span class="speaker-name"></span>
+                <p class="dialogue-text"></p>
+                <span class="continue-prompt">Tap to continue...</span>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <canvas id="game-canvas"></canvas>
+            <div id="game-ui">
+                <div class="health-bar">
+                    <span>HP</span>
+                    <div class="health-fill"></div>
+                    <span class="health-text">100</span>
+                </div>
+                <div class="pet-display">
+                    <div class="pet-icon zoink-icon"></div>
+                    <span class="pet-name">Zoink</span>
+                </div>
+                <div class="ability-bar">
+                    <div class="ability touch-ability" data-ability="pounce" data-key="Digit1">
+                        <span class="key">1</span>
+                        <span class="ability-name">Pounce</span>
+                    </div>
+                    <div class="ability touch-ability" data-ability="gun" data-key="Digit2">
+                        <span class="key">2</span>
+                        <span class="ability-name">Gun</span>
+                    </div>
+                    <div class="ability touch-ability" data-ability="special" data-key="Digit3">
+                        <span class="key">3</span>
+                        <span class="ability-name">Swing</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Touch Controls for Mobile/Tablet -->
+            <div id="touch-controls">
+                <div class="touch-left">
+                    <button class="touch-btn move-left" data-key="ArrowLeft">◀</button>
+                    <button class="touch-btn move-right" data-key="ArrowRight">▶</button>
+                </div>
+                <div class="touch-right">
+                    <button class="touch-btn jump-btn" data-key="Space">JUMP</button>
+                    <button class="touch-btn swing-btn" data-key="Digit3">SWING</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boss Battle Screen -->
+        <div id="boss-screen" class="screen">
+            <canvas id="boss-canvas"></canvas>
+            <div id="boss-ui">
+                <div class="boss-health-container">
+                    <span class="boss-name">THE ZIP</span>
+                    <div class="boss-health-bar">
+                        <div class="boss-health-fill"></div>
+                    </div>
+                </div>
+                <div class="player-health-bar">
+                    <span>HP</span>
+                    <div class="health-fill"></div>
+                    <span class="health-text">100</span>
+                </div>
+                <div class="battle-abilities">
+                    <div class="ability touch-ability" data-ability="pounce" data-key="Digit1">
+                        <span class="key">1</span>
+                        <span class="ability-name">Pounce</span>
+                    </div>
+                    <div class="ability touch-ability" data-ability="gun" data-key="Digit2">
+                        <span class="key">2</span>
+                        <span class="ability-name">Gun</span>
+                    </div>
+                    <div class="ability touch-ability" data-ability="special" data-key="Digit3">
+                        <span class="key">3</span>
+                        <span class="ability-name">Swing</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Touch Controls for Mobile/Tablet -->
+            <div id="boss-touch-controls">
+                <div class="touch-left">
+                    <button class="touch-btn move-left" data-key="ArrowLeft">◀</button>
+                    <button class="touch-btn move-right" data-key="ArrowRight">▶</button>
+                </div>
+                <div class="touch-right">
+                    <button class="touch-btn jump-btn" data-key="Space">JUMP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pet Unlock Screen (Genshin Style) -->
+        <div id="unlock-screen" class="screen">
+            <div class="unlock-bg">
+                <div class="unlock-rays"></div>
+                <div class="unlock-particles"></div>
+            </div>
+            <div class="unlock-content">
+                <h2 class="unlock-title">NEW PET UNLOCKED!</h2>
+                <div class="unlock-pet-container">
+                    <div class="unlock-pet zoink-unlock"></div>
+                </div>
+                <h3 class="unlock-pet-name">ZOINK</h3>
+                <div class="rarity-stars">
+                    <span class="rarity-label">COMMON</span>
+                </div>
+                <p class="pet-description">A friendly deer-pig hybrid with powerful antlers!</p>
+                <p class="ability-desc">Special Ability: Antler Swing</p>
+                <button id="continue-btn" class="main-btn">CONTINUE</button>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div id="victory-screen" class="screen">
+            <div class="stars-bg"></div>
+            <h1>LEVEL 1 COMPLETE!</h1>
+            <p>You defeated Zip and got your money back!</p>
+            <p>Zoink has joined your team!</p>
+            <button id="next-level-btn" class="main-btn">Continue Adventure</button>
+            <button id="back-to-levels-btn" class="secondary-btn" style="margin-top: 15px;">Back to Home</button>
+        </div>
+
+        <!-- Death/Revive Screen -->
+        <div id="death-screen" class="screen">
+            <div class="death-bg"></div>
+            <div class="death-content">
+                <h1 class="death-title">YOU FELL!</h1>
+                <p class="death-message">Don't give up! Belly needs you!</p>
+                <div class="death-character"></div>
+                <button id="revive-btn" class="main-btn revive-btn">REVIVE</button>
+                <button id="quit-btn" class="secondary-btn">Return to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+

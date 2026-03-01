@@ -1,0 +1,1624 @@
+/* Cosmic Zoo - Finding Belly */
+/* Main Styles */
+
+:root {
+    --sky-light: #87CEEB;
+    --sky-dark: #1a1a4e;
+    --cloud-white: #ffffff;
+    --belly-green: #4CAF50;
+    --zoink-yellow: #FFD700;
+    --zoink-pink: #FFB6C1;
+    --zip-black: #1a1a1a;
+    --zip-eyes: #ffffff;
+    --linky-blue: #4169E1;
+    --hang-red: #DC143C;
+    --owner-male-shirt: #4CAF50;
+    --owner-male-hair: #8B4513;
+    --owner-female-shirt: #FFB6C1;
+    --owner-female-hair: #F5DEB3;
+    --gold: #FFD700;
+    --common-color: #9CA3AF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    overflow: hidden;
+    background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Stars Background */
+.stars-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 350px 200px, #fff, transparent),
+        radial-gradient(2px 2px at 420px 50px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 500px 180px, #fff, transparent),
+        radial-gradient(2px 2px at 580px 90px, rgba(255,255,255,0.9), transparent);
+    background-size: 600px 250px;
+    animation: twinkle 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Title Screen */
+#title-screen {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+.game-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5rem;
+    color: #FFD700;
+    text-shadow: 
+        4px 4px 0 #FF6B6B,
+        8px 8px 0 rgba(0,0,0,0.3);
+    animation: titleBounce 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes titleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.subtitle {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: white;
+    margin-top: 10px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    z-index: 1;
+}
+
+.belly-preview {
+    width: 150px;
+    height: 150px;
+    margin: 30px 0;
+    background: var(--belly-green);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    animation: bellyFloat 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+.belly-preview::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 40px;
+    background: #3d8b40;
+    border-radius: 50%;
+}
+
+.belly-preview::after {
+    content: '◉ ◉';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: #1a1a1a;
+}
+
+@keyframes bellyFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.tagline {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+.main-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    padding: 15px 50px;
+    background: linear-gradient(180deg, #FF6B6B 0%, #ee5a5a 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #c44545, 0 10px 20px rgba(0,0,0,0.3);
+    transition: all 0.1s ease;
+    z-index: 1;
+}
+
+.main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 #c44545, 0 12px 25px rgba(0,0,0,0.3);
+}
+
+.main-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #c44545, 0 5px 10px rgba(0,0,0,0.3);
+}
+
+/* Character Select */
+#character-select {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+#character-select h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    margin-bottom: 40px;
+    z-index: 1;
+}
+
+.character-options {
+    display: flex;
+    gap: 60px;
+    z-index: 1;
+}
+
+.character-option {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.character-option:hover {
+    transform: scale(1.1);
+}
+
+.character-option p {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: white;
+    margin-top: 15px;
+}
+
+.character-preview {
+    width: 120px;
+    height: 180px;
+    border-radius: 20px;
+    position: relative;
+    border: 4px solid white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.male-char {
+    background: linear-gradient(180deg, var(--owner-male-hair) 0% 30%, #FFE4C4 30% 50%, var(--owner-male-shirt) 50% 100%);
+}
+
+.male-char::after {
+    content: '• •';
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    letter-spacing: 8px;
+}
+
+.female-char {
+    background: linear-gradient(180deg, var(--owner-female-hair) 0% 35%, #FFE4C4 35% 50%, var(--owner-female-shirt) 50% 100%);
+}
+
+.female-char::after {
+    content: '• •';
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    letter-spacing: 8px;
+}
+
+/* Cutscene Screen */
+#cutscene-screen {
+    background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+}
+
+.cutscene-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #87CEEB 0%, #b8e4f9 60%, #90EE90 60%, #228B22 100%);
+}
+
+/* Original cutscene-characters - overridden below */
+
+.dialogue-box {
+    position: absolute;
+    bottom: 30px;
+    width: 80%;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 20px;
+    padding: 25px 35px;
+    border: 3px solid #FFD700;
+    z-index: 10;
+}
+
+.speaker-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: #FFD700;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dialogue-text {
+    font-size: 1.2rem;
+    color: white;
+    line-height: 1.6;
+    min-height: 50px;
+}
+
+.continue-prompt {
+    display: block;
+    text-align: right;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Game Screen */
+#game-screen {
+    background: #87CEEB;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#game-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.health-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+
+.health-bar span {
+    font-family: 'Fredoka One', cursive;
+    color: white;
+}
+
+.health-fill {
+    width: 150px;
+    height: 20px;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.pet-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+
+.pet-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.zoink-icon {
+    background: var(--zoink-yellow);
+    position: relative;
+}
+
+.zoink-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 10px;
+    background: var(--zoink-pink);
+    border-radius: 50%;
+}
+
+.pet-name {
+    font-family: 'Fredoka One', cursive;
+    color: white;
+}
+
+.ability-bar {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.ability {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.8);
+    padding: 15px 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.ability:hover {
+    transform: translateY(-5px);
+    border-color: #FFD700;
+}
+
+.ability .key {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: #FFD700;
+    background: rgba(255,215,0,0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.ability-name {
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* Boss Screen */
+#boss-screen {
+    background: linear-gradient(180deg, #2c1810 0%, #1a0f0a 100%);
+}
+
+#boss-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#boss-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.boss-health-container {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.boss-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #DC143C;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.boss-health-bar {
+    width: 400px;
+    height: 25px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 3px solid #DC143C;
+}
+
+.boss-health-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #DC143C, #FF6B6B);
+    transition: width 0.3s ease;
+}
+
+.player-health-bar {
+    position: absolute;
+    bottom: 100px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+
+.player-health-bar span {
+    font-family: 'Fredoka One', cursive;
+    color: white;
+}
+
+.battle-abilities {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+/* Unlock Screen (Genshin Style) */
+#unlock-screen {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    overflow: hidden;
+}
+
+.unlock-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.unlock-rays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255, 215, 0, 0.1) 10deg,
+        transparent 20deg
+    );
+    animation: rotateRays 20s linear infinite;
+}
+
+@keyframes rotateRays {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.unlock-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 100px 100px, #FFD700, transparent),
+        radial-gradient(3px 3px at 200px 200px, #FFD700, transparent),
+        radial-gradient(2px 2px at 300px 150px, #FFD700, transparent),
+        radial-gradient(3px 3px at 400px 300px, #FFD700, transparent),
+        radial-gradient(2px 2px at 500px 100px, #FFD700, transparent);
+    animation: floatParticles 3s ease-in-out infinite;
+}
+
+@keyframes floatParticles {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-20px); opacity: 1; }
+}
+
+.unlock-content {
+    z-index: 10;
+    text-align: center;
+    animation: unlockReveal 1s ease-out;
+}
+
+@keyframes unlockReveal {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.unlock-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    color: #FFD700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    margin-bottom: 30px;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+    50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4); }
+}
+
+.unlock-pet-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+.unlock-pet {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: petFloat 3s ease-in-out infinite;
+}
+
+.zoink-unlock {
+    background: var(--zoink-yellow);
+    position: relative;
+    border-radius: 50%;
+}
+
+.zoink-unlock::before {
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 35px;
+    background: var(--zoink-pink);
+    border-radius: 50%;
+}
+
+.zoink-unlock::after {
+    content: '◉ ◉';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: #1a1a1a;
+    letter-spacing: 20px;
+}
+
+@keyframes petFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.unlock-pet-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.rarity-stars {
+    margin-bottom: 20px;
+}
+
+.rarity-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--common-color);
+    background: rgba(156, 163, 175, 0.2);
+    padding: 5px 30px;
+    border-radius: 20px;
+    border: 2px solid var(--common-color);
+}
+
+.pet-description {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.ability-desc {
+    color: #FFD700;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/* Victory Screen */
+#victory-screen {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+#victory-screen h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.5rem;
+    color: #FFD700;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+#victory-screen p {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 15px;
+    z-index: 1;
+}
+
+/* Character sprites in cutscenes - overridden below */
+
+.char-owner {
+    background: linear-gradient(180deg, var(--owner-male-hair) 0% 25%, #FFE4C4 25% 45%, var(--owner-male-shirt) 45% 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+.char-belly {
+    width: 120px;
+    height: 120px;
+    background: var(--belly-green);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.char-zoink {
+    width: 100px;
+    height: 100px;
+    background: var(--zoink-yellow);
+    border-radius: 50%;
+}
+
+.char-zip {
+    width: 100px;
+    height: 100px;
+    background: var(--zip-black);
+    border-radius: 50%;
+}
+
+/* ============== TOUCH CONTROLS FOR MOBILE/TABLET ============== */
+
+#touch-controls, #boss-touch-controls {
+    position: absolute;
+    bottom: 120px;
+    left: 0;
+    right: 0;
+    display: none;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.touch-left, .touch-right {
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.touch-btn:active, .touch-btn.active {
+    background: rgba(255, 215, 0, 0.7);
+    border-color: #FFD700;
+    transform: scale(0.95);
+}
+
+.jump-btn {
+    background: rgba(76, 175, 80, 0.6);
+    font-size: 1rem;
+}
+
+.swing-btn {
+    background: rgba(255, 215, 0, 0.4);
+    font-size: 0.9rem;
+}
+
+.move-left, .move-right {
+    font-size: 2rem;
+}
+
+/* Make ability buttons touch-friendly */
+.touch-ability {
+    pointer-events: auto;
+    cursor: pointer;
+    min-width: 80px;
+    min-height: 80px;
+}
+
+.touch-ability:active {
+    background: rgba(255, 215, 0, 0.5);
+    transform: scale(0.95);
+}
+
+/* Show touch controls on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    #touch-controls, #boss-touch-controls {
+        display: flex !important;
+    }
+    
+    .ability-bar {
+        bottom: 200px;
+    }
+    
+    .battle-abilities {
+        bottom: 200px;
+    }
+    
+    .player-health-bar {
+        bottom: 200px;
+    }
+}
+
+/* Also show on smaller screens regardless of touch capability */
+@media (max-width: 1024px) {
+    #touch-controls, #boss-touch-controls {
+        display: flex !important;
+    }
+    
+    .ability-bar {
+        bottom: 200px;
+    }
+    
+    .battle-abilities {
+        bottom: 200px;
+    }
+    
+    .player-health-bar {
+        bottom: 200px;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .character-options {
+        gap: 30px;
+    }
+    
+    .character-preview {
+        width: 100px;
+        height: 150px;
+    }
+    
+    .ability-bar, .battle-abilities {
+        gap: 8px;
+        bottom: 200px;
+    }
+    
+    .ability {
+        padding: 8px 12px;
+    }
+    
+    .ability .key {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    
+    .ability-name {
+        font-size: 0.75rem;
+    }
+    
+    .touch-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+    
+    .jump-btn, .swing-btn {
+        font-size: 0.8rem;
+    }
+    
+    .boss-health-bar {
+        width: 280px;
+    }
+    
+    .boss-name {
+        font-size: 1.5rem;
+    }
+    
+    .dialogue-box {
+        width: 95%;
+        padding: 15px 20px;
+    }
+    
+    .dialogue-text {
+        font-size: 1rem;
+    }
+    
+    .continue-prompt {
+        font-size: 0.8rem;
+    }
+}
+
+/* Prevent text selection on game elements */
+#game-screen, #boss-screen {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Improve touch response */
+canvas {
+    touch-action: none;
+}
+
+/* ============== DEATH/REVIVE SCREEN ============== */
+
+#death-screen {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+}
+
+.death-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(220, 20, 60, 0.2) 0%, transparent 70%);
+    animation: deathPulse 2s ease-in-out infinite;
+}
+
+@keyframes deathPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.death-content {
+    z-index: 10;
+    text-align: center;
+    animation: deathFadeIn 0.5s ease-out;
+}
+
+@keyframes deathFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.death-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4rem;
+    color: #DC143C;
+    text-shadow: 0 0 30px rgba(220, 20, 60, 0.7);
+    margin-bottom: 20px;
+}
+
+.death-message {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+.death-character {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    background: #FFD700;
+    border-radius: 50%;
+    position: relative;
+    animation: sadBounce 1s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+.death-character::after {
+    content: '😢';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+}
+
+@keyframes sadBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.revive-btn {
+    background: linear-gradient(180deg, #4CAF50 0%, #388E3C 100%);
+    box-shadow: 0 6px 0 #2E7D32, 0 10px 20px rgba(0,0,0,0.3);
+    margin-bottom: 15px;
+}
+
+.revive-btn:hover {
+    box-shadow: 0 8px 0 #2E7D32, 0 12px 25px rgba(0,0,0,0.3);
+}
+
+.revive-btn:active {
+    box-shadow: 0 2px 0 #2E7D32, 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.secondary-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    padding: 10px 30px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    color: white;
+    border-color: white;
+}
+
+/* ============== LEVEL SELECT SCREEN ============== */
+
+#level-select {
+    background: linear-gradient(180deg, #87CEEB 0%, #B8E4F9 50%, #E0F6FF 100%);
+}
+
+.clouds-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.clouds-bg::before,
+.clouds-bg::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    background: white;
+    border-radius: 100px;
+    opacity: 0.8;
+}
+
+.clouds-bg::before {
+    top: 10%;
+    left: 5%;
+    animation: floatCloud 20s ease-in-out infinite;
+}
+
+.clouds-bg::after {
+    top: 20%;
+    right: 10%;
+    width: 250px;
+    animation: floatCloud 25s ease-in-out infinite reverse;
+}
+
+@keyframes floatCloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(30px); }
+}
+
+.level-select-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: #2c3e50;
+    text-shadow: 2px 2px 0 white;
+    margin-bottom: 50px;
+    z-index: 10;
+}
+
+.levels-container {
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.level-row {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.level-node {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.level-node:hover:not(.locked) {
+    transform: scale(1.1);
+}
+
+.level-node.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.level-cloud {
+    width: 120px;
+    height: 80px;
+    background: white;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.1),
+        inset 0 -5px 20px rgba(0, 0, 0, 0.05);
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.level-cloud::before,
+.level-cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+}
+
+.level-cloud::before {
+    width: 50px;
+    height: 50px;
+    top: -20px;
+    left: 20px;
+}
+
+.level-cloud::after {
+    width: 40px;
+    height: 40px;
+    top: -15px;
+    right: 25px;
+}
+
+.level-node:not(.locked) .level-cloud {
+    animation: cloudBounce 3s ease-in-out infinite;
+}
+
+@keyframes cloudBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.level-number {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    color: #3498db;
+    z-index: 1;
+}
+
+.level-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.chapter-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: #5a7a9a;
+    margin-top: 20px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 20px;
+    border-radius: 20px;
+}
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    border: 3px solid #2c3e50;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.home-btn:hover {
+    background: #2c3e50;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Pets Button */
+.pets-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 12px 24px;
+    background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+    color: #2c3e50;
+    border: 3px solid #e69500;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #cc8400, 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.pets-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #cc8400, 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.pets-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #cc8400, 0 3px 10px rgba(0,0,0,0.2);
+}
+
+/* Pets Modal */
+.pets-modal-content {
+    max-width: 600px;
+}
+
+.pets-collection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+    min-height: 150px;
+}
+
+.pet-card {
+    width: 120px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.pet-card:hover {
+    transform: scale(1.05);
+    border-color: #FFD700;
+}
+
+.pet-card-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.pet-card-icon.zoink {
+    background: #FFD700;
+}
+
+.pet-card-icon.zoink::after {
+    content: '';
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 15px;
+    background: #FFB6C1;
+    border-radius: 50%;
+}
+
+.pet-card-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.pet-card-rarity {
+    font-size: 0.8rem;
+    color: #9CA3AF;
+}
+
+.pet-card-rarity.common {
+    color: #9CA3AF;
+}
+
+.pet-card-ability {
+    font-size: 0.75rem;
+    color: #FFD700;
+    margin-top: 5px;
+}
+
+.pets-count {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.pets-count span {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.no-pets-message {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    padding: 40px;
+}
+
+@media (max-width: 768px) {
+    .pets-btn {
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+    
+    .pet-card {
+        width: 100px;
+        padding: 10px;
+    }
+    
+    .pet-card-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* ============== MODE SELECT MODAL ============== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: linear-gradient(180deg, #1a1a2e 0%, #2d2d44 100%);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    border: 3px solid #FFD700;
+    animation: modalPop 0.3s ease-out;
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+.mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    transform: translateY(-3px);
+}
+
+.story-btn {
+    background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);
+    border-color: #8e44ad;
+}
+
+.story-btn:hover {
+    border-color: #FFD700;
+    box-shadow: 0 5px 20px rgba(155, 89, 182, 0.5);
+}
+
+.freeplay-btn {
+    background: linear-gradient(180deg, #3498db 0%, #2980b9 100%);
+    border-color: #2980b9;
+}
+
+.freeplay-btn:hover {
+    border-color: #FFD700;
+    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.5);
+}
+
+.mode-icon {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.mode-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: white;
+}
+
+.mode-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#close-modal-btn {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .level-select-title {
+        font-size: 2rem;
+    }
+    
+    .level-cloud {
+        width: 100px;
+        height: 70px;
+    }
+    
+    .level-number {
+        font-size: 2rem;
+    }
+    
+    .modal-content {
+        padding: 25px;
+    }
+    
+    .mode-btn {
+        padding: 15px;
+    }
+}
+
+/* ============== CUTSCENE BACKGROUND ANIMATIONS ============== */
+
+@keyframes rain {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.3) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100%) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Improved cutscene bg styling */
+.cutscene-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+/* Shake animation for grabbed/shocked characters */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-2deg); }
+    50% { transform: translateX(5px) rotate(2deg); }
+    75% { transform: translateX(-3px) rotate(-1deg); }
+}
+
+/* Bounce animation for happy characters */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Slide animation for characters leaving */
+@keyframes slideRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100px); opacity: 0; }
+}
+
+/* Improved dialogue box styling */
+.dialogue-box {
+    position: absolute;
+    bottom: 30px;
+    width: 80%;
+    max-width: 800px;
+    background: linear-gradient(180deg, rgba(20, 20, 40, 0.95) 0%, rgba(10, 10, 25, 0.98) 100%);
+    border-radius: 20px;
+    padding: 25px 35px;
+    border: 3px solid #FFD700;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 10;
+}
+
+.speaker-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: #FFD700;
+    display: block;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.dialogue-text {
+    font-size: 1.25rem;
+    color: white;
+    line-height: 1.7;
+    min-height: 50px;
+    letter-spacing: 0.5px;
+}
+
+/* Cutscene character container - flexbox layout */
+.cutscene-characters {
+    position: absolute;
+    bottom: 180px;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 60px;
+    pointer-events: none;
+}
+
+.cutscene-character {
+    position: relative;
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    animation: characterEnter 0.5s ease-out;
+}
+
+/* Character entrance animation */
+@keyframes characterEnter {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
